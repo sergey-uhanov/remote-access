@@ -1,0 +1,13 @@
+services:
+  remote-access:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: remote-access
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    ports:
+      - "3000:3000"
+      - "8082:8082"
+    restart: unless-stopped
