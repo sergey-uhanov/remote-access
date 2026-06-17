@@ -25,6 +25,20 @@ export class DeviceControlGateway implements OnModuleInit {
             ws.on('message', (message) => {
                 const data = JSON.parse(message.toString());
 
+                if (data.type === 'ack') {
+                    console.log(`[ACK] ${data.clientId} confirmed ${data.command}`);
+
+
+                    this.sendCommand('frontend-admin', {
+                        type: 'device_ack',
+                        deviceId: data.clientId,
+                        command: data.command,
+                        status: data.status,
+                    });
+
+                    return;
+                }
+
                 if (data.type === 'register') {
                     this.clients.set(data.clientId, {
                         id: data.clientId,
@@ -47,9 +61,7 @@ export class DeviceControlGateway implements OnModuleInit {
                     return;
                 }
                 if (data.type === 'heartbeat') {
-
                     const client = this.clients.get(data.clientId);
-
                     if (client) {
                         client.lastSeen = Date.now();
                     }
