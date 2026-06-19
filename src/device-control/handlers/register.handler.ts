@@ -8,6 +8,7 @@ export class RegisterHandler {
     ) {}
 
     handle(ws: WebSocket, data: any) {
+        console.log('register device:',data.clientId)
         this.registry.add({
             id: data.clientId,
             type: data.clientType,
