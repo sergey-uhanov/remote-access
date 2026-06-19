@@ -21,7 +21,7 @@ export class HeartbeatService implements OnModuleInit, OnModuleDestroy {
         const now = Date.now();
 
         for (const [id, client] of this.registry.getAll()) {
-            if (now - client.lastSeen > 11000) {
+            if (now - client.lastSeen > 11000 && client.id === 'esp-32') {
 
                 this.commandRouter.send(
                     'frontend-admin',

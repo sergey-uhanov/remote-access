@@ -24,6 +24,7 @@ export class DeviceControlGateway implements OnModuleInit {
             });
 
             ws.on('close', () => {
+                console.log('close connection ')
                 this.clientRegistryService.remove(ws);
             });
         });
