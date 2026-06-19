@@ -17,7 +17,7 @@ export class RegisterHandler {
             socket: ws,
             lastSeen: Date.now(),
         });
-        switch (data.type){
+        switch (data.clientId){
             case 'esp-32' : this.commandRouterService.send('frontend-admin', {type: 'esp32 is online'})
         }
     }
