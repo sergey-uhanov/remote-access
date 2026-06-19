@@ -19,14 +19,13 @@ export class DeviceControlGateway implements OnModuleInit {
             port: 8082,
         });
 
-        console.log('Device WS started on 8082');
 
         this.wss.on('connection', (ws) => {
             ws.on('message', (message) => {
                 const data = JSON.parse(message.toString());
 
                 if (data.type === 'ack') {
-                    console.log(`[ACK] ${data.clientId} confirmed ${data.command}`);
+
 
 
                     this.sendCommand('frontend-admin', {
@@ -69,14 +68,13 @@ export class DeviceControlGateway implements OnModuleInit {
                     return;
                 }
                 this.sendCommand(data.deviceId, {type: data.type});
-                console.log('Message from:', data);
+
             });
 
             ws.on('close', () => {
-                console.log('Connection closed');
+
                 for (const [id, client] of this.clients.entries()) {
-                    console.log(`Client ID: ${id}`);
-                    console.log(`Client: ${client}`);
+
                     if (client.socket === ws) {
                         this.clients.delete(id);
                         break;
