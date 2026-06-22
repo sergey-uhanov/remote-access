@@ -3,18 +3,24 @@ import {AckHandler} from "../handlers/ack.handler";
 import {HeartbeatHandler} from "../handlers/heartbeat.handler";
 import {RegisterHandler} from "../handlers/register.handler";
 import {WebSocket} from "ws";
+import {SensorsDataHandler} from "../handlers/sensors-data.handler";
 
 @Injectable()
 export class MessageRouterService {
     constructor(private readonly handleAck: AckHandler,
                 private readonly handleHeartbeat: HeartbeatHandler,
-                private readonly handleRegister: RegisterHandler,) {
+                private readonly handleRegister: RegisterHandler,
+                private readonly sensorsDataHandler: SensorsDataHandler,) {
     }
 
     handleMessage(ws: WebSocket, data: any) {
+        console.log('took new message');
         switch (data.type) {
             case 'register':
                 return this.handleRegister.handle(ws, data);
+
+            case 'CHECK_WATERLINE':
+                return this.sensorsDataHandler.handleCheckWaterline(data);
 
             case 'heartbeat':
                 return this.handleHeartbeat.handle(data);

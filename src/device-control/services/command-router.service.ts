@@ -8,9 +8,11 @@ export class CommandRouterService {
     ) {}
 
     send(deviceId: string, payload: unknown) {
+        console.log('send', deviceId);
         const client = this.registry.get(deviceId);
 
         if (!client) {
+            console.log('no client', deviceId);
             return;
         }
 
