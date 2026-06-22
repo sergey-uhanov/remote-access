@@ -7,6 +7,7 @@ import { ClientRegistryService } from './services/client-registry.service';
 import { CommandRouterService } from './services/command-router.service';
 import { HeartbeatService } from './services/heartbeat.service';
 import { MessageRouterService } from './services/message-router.service';
+import {SensorsDataHandler} from "./handlers/sensors-data.handler";
 
 
 
@@ -20,6 +21,7 @@ import { MessageRouterService } from './services/message-router.service';
     AckHandler,
     HeartbeatHandler,
     RegisterHandler,
+    SensorsDataHandler
   ],
   exports: [DeviceControlGateway],
 })
