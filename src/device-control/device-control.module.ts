@@ -8,6 +8,7 @@ import { CommandRouterService } from './services/command-router.service';
 import { HeartbeatService } from './services/heartbeat.service';
 import { MessageRouterService } from './services/message-router.service';
 import {SensorsDataHandler} from "./handlers/sensors-data.handler";
+import {PowerDivisionManagementHandler} from "./handlers/powerDivisionManagement.handler";
 
 
 
@@ -21,7 +22,8 @@ import {SensorsDataHandler} from "./handlers/sensors-data.handler";
     AckHandler,
     HeartbeatHandler,
     RegisterHandler,
-    SensorsDataHandler
+    SensorsDataHandler,
+    PowerDivisionManagementHandler
   ],
   exports: [DeviceControlGateway],
 })
