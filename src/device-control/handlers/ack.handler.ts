@@ -13,6 +13,7 @@ export class AckHandler {
             deviceId: data.clientId,
             command: data.command,
             status: data.status,
+            message: data.message,
         });
     }
 }
