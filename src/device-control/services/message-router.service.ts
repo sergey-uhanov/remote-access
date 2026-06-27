@@ -24,7 +24,10 @@ export class MessageRouterService {
                 return this.sensorsDataHandler.handleCheckWaterline(data);
 
             case 'FILTER_ON':
-                return this.powerDivisionManagementHandler.handleSwitchOnSocketOne(data);
+                return this.powerDivisionManagementHandler.handleSwitchOnSocket(data);
+
+            case 'FILTER_OFF':
+                return this.powerDivisionManagementHandler.handleSwitchOnSocket(data);
 
             case 'heartbeat':
                 return this.handleHeartbeat.handle(data);
@@ -33,6 +36,4 @@ export class MessageRouterService {
                 return this.handleAck.handle(data);
         }
     }
-
-
 }
