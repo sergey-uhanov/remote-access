@@ -1,5 +1,6 @@
 import {Injectable, OnModuleInit} from '@nestjs/common';
 import {WebSocket, WebSocketServer} from 'ws';
+import {ClientRegistryService} from "./services/client-registry.service";
 
 interface ClientInfo {
     id: string;
@@ -10,8 +11,9 @@ interface ClientInfo {
 
 @Injectable()
 export class DeviceControlGateway implements OnModuleInit {
+    constructor(private readonly clients: ClientRegistryService) {}
+
     private wss: WebSocketServer;
-    private clients = new Map<string, ClientInfo>();
     private heartbeatInterval: NodeJS.Timeout;
 
     onModuleInit() {
@@ -25,9 +27,6 @@ export class DeviceControlGateway implements OnModuleInit {
                 const data = JSON.parse(message.toString());
 
                 if (data.type === 'ack') {
-
-
-
                     this.sendCommand('frontend-admin', {
                         type: 'device_ack',
                         deviceId: data.clientId,
@@ -39,7 +38,7 @@ export class DeviceControlGateway implements OnModuleInit {
                 }
 
                 if (data.type === 'register') {
-                    this.clients.set(data.clientId, {
+                    this.clients.add({
                         id: data.clientId,
                         type: data.clientType,
                         socket: ws,
@@ -73,13 +72,7 @@ export class DeviceControlGateway implements OnModuleInit {
 
             ws.on('close', () => {
 
-                for (const [id, client] of this.clients.entries()) {
-
-                    if (client.socket === ws) {
-                        this.clients.delete(id);
-                        break;
-                    }
-                }
+              this.clients.remove(ws)
             });
         });
         this.startHeartbeatChecker();
@@ -89,13 +82,13 @@ export class DeviceControlGateway implements OnModuleInit {
         this.heartbeatInterval = setInterval(() => {
             const now = Date.now();
 
-            for (const [id, client] of this.clients.entries()) {
+            for (const [id, client] of this.clients.getAll().entries()) {
                 const diff = now - client.lastSeen;
                 if (diff > 11000 && client.id === 'esp-32') {
 
                     this.sendCommand('frontend-admin', {type: 'esp32 is offline'})
                     client.socket.terminate();
-                    this.clients.delete(id);
+                    this.clients.removeById(id);
                 }
             }
         }, 10000);
