@@ -5,11 +5,12 @@ import {WebSocket} from "ws";
 @Injectable()
 export class ClientRegistryService {
     private clients = new Map<string, ClientInfo>();
+
     add(client: ClientInfo) {
         this.clients.set(client.id, client);
     }
 
-    remove(ws:WebSocket) {
+    remove(ws: WebSocket) {
         for (const [id, client] of this.clients.entries()) {
 
             if (client.socket === ws) {
@@ -18,6 +19,7 @@ export class ClientRegistryService {
             }
         }
     }
+
     removeById(id: string) {
         this.clients.delete(id);
     }

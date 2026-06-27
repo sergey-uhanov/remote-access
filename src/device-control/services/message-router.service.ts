@@ -16,7 +16,6 @@ export class MessageRouterService {
     }
 
     handleMessage(ws: WebSocket, data: any) {
-        console.log('took new message');
         switch (data.type) {
             case 'register':
                 return this.handleRegister.handle(ws, data);
